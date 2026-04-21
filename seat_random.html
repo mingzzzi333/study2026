@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>랜덤 자리 배치</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nanum Gothic', sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 32px;
+  }
+
+  .screen-bar {
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 60px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .teacher-box {
+    background: #fff;
+    border: 2px solid #1a1a2e;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 32px;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    color: #1a1a2e;
+  }
+
+  .classroom {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #aaa;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .divider {
+    width: 2px;
+    background: #ddd;
+    align-self: stretch;
+    border-radius: 2px;
+    margin-top: 28px;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .seat {
+    width: 72px;
+    height: 52px;
+    background: #fff;
+    border: 1.5px solid #d0d7e3;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a2e;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .seat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+
+  .btn {
+    margin-top: 36px;
+    padding: 14px 48px;
+    background: #1a1a2e;
+    color: #fff;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 16px rgba(26,26,46,0.2);
+  }
+
+  .btn:hover { background: #2e2e5e; }
+  .btn:active { transform: scale(0.97); }
+
+  .seat.animate {
+    animation: pop 0.3s ease;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0.4; }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<h1>랜덤 자리 배치</h1>
+<p class="subtitle">버튼을 누를 때마다 새로운 자리가 배치됩니다</p>
+
+<div class="screen-bar">앞쪽 스크린</div>
+<div class="teacher-box">강사</div>
+
+<div class="classroom" id="classroom"></div>
+
+<button class="btn" onclick="arrange()">🔀 다시 배치하기</button>
+
+<script>
+  const students = [
+    "조운", "조은결", "권대현", "김성호", "한혜경", "유지산",
+    "이춘우", "최준호", "이서우", "김민정A", "박지우", "박은빈",
+    "진미경", "박상우", "조용민", "김민정B", "이종혁", "김유선",
+    "심정호", "이태경", "황동건", "이상욱", "원가희", "신혜진",
+    "김선희", "한은대", "박초롱", "박준하", "채란", "이민지"
+  ];
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function makeSeat(name) {
+    const div = document.createElement('div');
+    div.className = 'seat';
+    div.textContent = name;
+    return div;
+  }
+
+  function makeRow(names) {
+    const row = document.createElement('div');
+    row.className = 'row';
+    if (names.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.height = '52px';
+        row.appendChild(empty);
+    } else {
+        names.forEach(n => row.appendChild(makeSeat(n)));
+    }
+    return row;
+}
+
+  function makeSection(rows, label) {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    const title = document.createElement('div');
+    title.className = 'section-title';
+    title.textContent = label;
+    sec.appendChild(title);
+    rows.forEach(r => sec.appendChild(makeRow(r)));
+    return sec;
+  }
+
+  function arrange() {
+    const s = shuffle(students);
+    let idx = 0;
+
+    // 구역1: 2명씩 5줄
+    const sec1 = [];
+    for (let i = 0; i < 5; i++) { sec1.push(s.slice(idx, idx+2)); idx += 2; }
+
+    // 구역2: 맨앞줄 2명 + 나머지 4줄 3명
+    const sec2 = [];
+    sec2.push(s.slice(idx, idx+2)); idx += 2;
+    for (let i = 0; i < 4; i++) { sec2.push(s.slice(idx, idx+3)); idx += 3; }
+
+    // 구역3: 1명, 1명, 2명, 2명
+    // 구역3: 1명, 1명, 2명, 2명
+    const sec3 = [];
+    sec3.push([]); 
+    sec3.push([s[idx++]]);
+    sec3.push([s[idx++]]);
+    sec3.push(s.slice(idx, idx+2)); idx += 2;
+    sec3.push(s.slice(idx, idx+2)); idx += 2;
+
+    const classroom = document.getElementById('classroom');
+    classroom.innerHTML = '';
+    classroom.appendChild(makeSection(sec1, '구역 1'));
+
+    const div1 = document.createElement('div'); div1.className = 'divider';
+    classroom.appendChild(div1);
+
+    classroom.appendChild(makeSection(sec2, '구역 2'));
+
+    const div2 = document.createElement('div'); div2.className = 'divider';
+    classroom.appendChild(div2);
+
+    classroom.appendChild(makeSection(sec3, '구역 3'));
+
+    // 애니메이션
+    document.querySelectorAll('.seat').forEach((seat, i) => {
+      setTimeout(() => {
+        seat.classList.add('animate');
+        setTimeout(() => seat.classList.remove('animate'), 300);
+      }, i * 20);
+    });
+  }
+
+  arrange();
+</script>
+</body>
+</html>
