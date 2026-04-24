@@ -1,0 +1,50 @@
+<html lang="en">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <h1>간단한 alert</h1>
+        <button onclick="basicAlert()">기본 알림</button>
+        <button onclick="confirmAlert()">삭제 확인</button>
+        <button onclick="inputPrompt()">입력 알림</button>
+    </body>
+    <script>
+        function basicAlert(){
+            Swal.fire('안녕하세요', '이건 이렇게 간단하게 할 수 있습니다.')
+        }
+
+        function confirmAlert(){
+            Swal.fire({
+                title: "정말 삭제하십니까?",
+                text: "이 작업은 되돌릴 수 없습니다.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '삭제',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed){
+                    Swal.fire('삭제 완료', '삭제되었습니다.', 'success')
+                } else {
+                    Swal.fire('취소됨', '취소되었습니다.', 'info')
+                }
+            })
+        }
+
+        function inputPrompt(){
+            Swal.fire({
+                title: "이름을 입력하세요",
+                input: "text",
+                inputPlaceholder: '여기에 입력..',
+                showCancelButton: true,
+                confirmButtonText: '제출',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed && result.value){
+                    Swal.fire('입력한 값', `${result.value}`)
+                } else {
+                    Swal.fire('취소됨', '취소되었습니다.', 'info')
+                }
+            })
+        }
+    </script>
+</html>

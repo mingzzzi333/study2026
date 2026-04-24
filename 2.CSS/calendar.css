@@ -1,0 +1,61 @@
+h1, h2 {
+    text-align: center;
+}
+
+img {
+    width: 100%;
+}
+
+/* ===== 4월 캘린더 ===== */
+#calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#calendar th {
+    width: 14%;
+    padding: 10px;
+    background-color: #dadada;
+}
+
+#calendar td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#calendar tr > *:first-child {
+    color: red;
+}
+
+#calendar th:last-child,
+#calendar td:last-child {
+    color: blue;
+}
+
+/* ===== 5월 캘린더 ===== */
+#calendar-may {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#calendar-may th {
+    width: 14%;
+    padding: 10px;
+    background-color: #dadada;
+}
+
+#calendar-may td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#calendar-may tr > *:first-child {
+    color: red;
+}
+
+#calendar-may th:last-child,
+#calendar-may td:last-child {
+    color: blue;
+}

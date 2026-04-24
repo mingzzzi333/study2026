@@ -1,67 +1,146 @@
-<html>
-    <head>
-        <title>포토 캘린더</title>
-    </head>
-    <body>
-        <h1>포토 캘린더</h1>
-        <h2>2026년 4월</h2>
-        <img src="C:/src/study2026/images/calendar_img.png" />
-        <table border="1" width="80%">
-            
-            <tr>
-             <th style="color: red;">SUN</th>
-             <th>MON</th>
-             <th>TUE</th>
-             <th>WEN</th>
-             <th>THU</th>
-             <th>FRI</th>
-             <th style="color: blue;">SAT</th>
-            </tr  <tr>
-             <td align="center" style="color: red;"></td>
-             <td align="center"></td>
-             <td align="center"></td>
-             <td align="center">1</td>
-             <td align="center">2</td>
-             <td align="center">3</td>
-             <td align="center" style="color: blue;">4</td>
-            </tr>
-            <tr>
-             <td align="center" style="color: red;">5</td>
-             <td align="center">6</td>
-             <td align="center">7</td>
-             <td align="center">8</td>
-             <td align="center">9</td>
-             <td align="center">10</td>
-             <td align="center" style="color: blue;">11</td>
-            </tr>
-            <tr>
-             <td align="center" style="color: red;">12</td>
-             <td align="center">13</td>
-             <td align="center">14</td>
-             <td align="center">15</td>
-             <td align="center">16</td>
-             <td align="center">17</td>
-             <td align="center" style="color: blue;">18</td>
-            </tr>
-            <tr>
-             <td align="center" style="color: red;">19</td>
-             <td align="center">20</td>
-             <td align="center">21</td>
-             <td align="center">22</td>
-             <td align="center">23</td>
-             <td align="center">24</td>
-             <td align="center" style="color: blue;">25</td>
-            </tr>
-            <tr>
-             <td align="center" style="color: red;">27</td>
-             <td align="center">28</td>
-             <td align="center">29</td>
-             <td align="center">30</td>
-             <td align="center"></td>
-             <td align="center"></td>
-             <td align="center" style="color: blue;"></td>
-            </tr>
-        </table>
-    </body>
+<!DOCTYPE html>
 
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>포토 캘린더</title>
+
+<style>
+body {
+    font-family: sans-serif;
+    background: #f5f6fa;
+    text-align: center;
+}
+
+/* 제목 */
+h1 {
+    margin-top: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* 이미지 */
+img {
+    width: 280px;
+    margin: 10px 0 20px;
+    border-radius: 12px;
+}
+
+/* 캘린더 박스 */
+.calendar {
+    width: 420px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* 요일 + 날짜 그리드 */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+/* 요일 */
+.day-name {
+    font-size: 12px;
+    color: #999;
+}
+
+/* 날짜 */
+.date {
+    height: 50px;
+    line-height: 50px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.date:hover {
+    background: #eef1ff;
+    cursor: pointer;
+}
+
+/* 주말 색 */
+.sun { color: #e53935; }
+.sat { color: #1e88e5; }
+
+/* 오늘 강조 예시 */
+.today {
+    background: #3f51b5;
+    color: white;
+    font-weight: bold;
+}
+</style>
+
+</head>
+<body>
+
+<h1>포토 캘린더</h1>
+<h2>2026년 4월</h2>
+
+<img src="C:/src/study2026/images/calendar_img.png">
+
+<div class="calendar">
+    <div class="grid">
+
+
+    <!-- 요일 -->
+    <div class="day-name sun">SUN</div>
+    <div class="day-name">MON</div>
+    <div class="day-name">TUE</div>
+    <div class="day-name">WED</div>
+    <div class="day-name">THU</div>
+    <div class="day-name">FRI</div>
+    <div class="day-name sat">SAT</div>
+
+    <!-- 빈칸 -->
+    <div></div><div></div><div></div>
+
+    <!-- 날짜 -->
+    <div class="date">1</div>
+    <div class="date">2</div>
+    <div class="date">3</div>
+    <div class="date sat">4</div>
+
+    <div class="date sun">5</div>
+    <div class="date">6</div>
+    <div class="date">7</div>
+    <div class="date">8</div>
+    <div class="date">9</div>
+    <div class="date">10</div>
+    <div class="date sat">11</div>
+
+    <div class="date sun">12</div>
+    <div class="date">13</div>
+    <div class="date">14</div>
+    <div class="date">15</div>
+    <div class="date">16</div>
+    <div class="date">17</div>
+    <div class="date sat">18</div>
+
+    <div class="date sun">19</div>
+    <div class="date">20</div>
+    <div class="date">21</div>
+    <div class="date today">22</div>
+    <div class="date">23</div>
+    <div class="date">24</div>
+    <div class="date sat">25</div>
+
+    <div class="date sun">26</div>
+    <div class="date">27</div>
+    <div class="date">28</div>
+    <div class="date">29</div>
+    <div class="date">30</div>
+
+</div>
+
+
+</div>
+
+</body>
 </html>
