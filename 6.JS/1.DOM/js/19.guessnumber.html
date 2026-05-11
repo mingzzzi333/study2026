@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>숫자 맞추기 게임</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎯 숫자 맞추기 게임</h1>
+    <p>1부터 100 사이 숫자를 맞춰보세요!</p>
+
+    <input type="number" id="guess" placeholder="숫자 입력">
+    <button onclick="checkNumber()">확인</button>
+
+    <div id="result"></div>
+
+    <script>
+        const answer = Math.floor(Math.random() * 100) + 1;
+        let count = 0;
+
+        function checkNumber() {
+            const userInput = document.getElementById("guess").value;
+            const result = document.getElementById("result");
+            count++;
+
+            if (!userInput) {
+                result.innerText = "숫자를 입력하세요!";
+                return;
+            }
+
+            const num = Number(userInput);
+
+            if (num === answer) {
+                result.innerText = `🎉 정답! ${count}번 만에 맞췄어요!`;
+            } else if (num > answer) {
+                result.innerText = "📉 너무 큼! 더 작은 숫자";
+            } else {
+                result.innerText = "📈 너무 작음! 더 큰 숫자";
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HANGMAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --panel: #11111a;
+    --border: #2a2a3a;
+    --accent: #e8ff00;
+    --danger: #ff3a3a;
+    --success: #00ff88;
+    --text: #c8c8d8;
+    --dim: #555566;
+    --rope: #8b6914;
+    --wood: #5a3e1b;
+    --body: #e8c090;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+    pointer-events: none;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(232,255,0,0.4);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--dim);
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+
+  .game-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 860px;
+    width: 100%;
+  }
+
+  /* === GALLOWS === */
+  .gallows-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 20px;
+    flex-shrink: 0;
+  }
+
+  canvas#gallows {
+    display: block;
+  }
+
+  /* === RIGHT PANEL === */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    min-width: 280px;
+  }
+
+  /* === WORD DISPLAY === */
+  .word-display {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    min-height: 80px;
+    align-items: center;
+  }
+
+  .letter-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .letter-char {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    min-width: 28px;
+    text-align: center;
+    height: 36px;
+    line-height: 36px;
+    transition: all 0.3s;
+    text-shadow: 0 0 10px rgba(232,255,0,0.5);
+  }
+
+  .letter-char.wrong {
+    color: var(--danger);
+    text-shadow: 0 0 10px rgba(255,58,58,0.5);
+    animation: shake 0.3s;
+  }
+
+  .letter-line {
+    width: 28px;
+    height: 2px;
+    background: var(--dim);
+  }
+
+  /* === STATUS === */
+  .status-bar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .lives {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .heart {
+    color: var(--danger);
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+
+  .heart.lost {
+    color: var(--border);
+    filter: grayscale(1);
+  }
+
+  .category-badge {
+    color: var(--accent);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid rgba(232,255,0,0.3);
+    padding: 3px 10px;
+  }
+
+  /* === KEYBOARD === */
+  .keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+
+  .key-row {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .key {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    width: 34px;
+    height: 34px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .key:hover:not(:disabled) {
+    background: rgba(232,255,0,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 8px rgba(232,255,0,0.2);
+  }
+
+  .key:disabled {
+    cursor: default;
+  }
+
+  .key.correct {
+    background: rgba(0,255,136,0.15);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .key.wrong {
+    background: rgba(255,58,58,0.1);
+    border-color: rgba(255,58,58,0.3);
+    color: var(--border);
+  }
+
+  /* === HINT === */
+  .hint-bar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .hint-bar span { color: var(--text); }
+
+  /* === OVERLAY === */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+
+  .overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .overlay-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.2em;
+  }
+
+  .overlay-title.win { color: var(--success); text-shadow: 0 0 40px rgba(0,255,136,0.5); }
+  .overlay-title.lose { color: var(--danger); text-shadow: 0 0 40px rgba(255,58,58,0.5); }
+
+  .overlay-word {
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    color: var(--text);
+  }
+
+  .overlay-word strong { color: var(--accent); }
+
+  .btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    padding: 12px 40px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+
+  .btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 30px rgba(232,255,0,0.4);
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .pop { animation: pop 0.4s forwards; }
+
+  .score-display {
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+  .score-display span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>HANGMAN</h1>
+<p class="subtitle">단어를 맞혀라 &mdash; 목숨을 걸고</p>
+
+<div class="game-container">
+  <!-- 교수대 -->
+  <div class="gallows-panel">
+    <canvas id="gallows" width="200" height="220"></canvas>
+  </div>
+
+  <!-- 우측 패널 -->
+  <div class="right-panel">
+    <div class="status-bar">
+      <div class="lives" id="lives"></div>
+      <div class="category-badge" id="category">—</div>
+      <div class="score-display">점수: <span id="score">0</span></div>
+    </div>
+
+    <div class="word-display" id="wordDisplay"></div>
+
+    <div class="hint-bar">
+      💡 힌트: <span id="hint">—</span>
+    </div>
+
+    <div class="keyboard" id="keyboard"></div>
+  </div>
+</div>
+
+<!-- 결과 오버레이 -->
+<div class="overlay" id="overlay">
+  <div class="overlay-title" id="overlayTitle"></div>
+  <div class="overlay-word" id="overlayWord"></div>
+  <button class="btn" onclick="newGame()">다시 시작</button>
+</div>
+
+<script>
+const WORDS = [
+  { word: 'JAVASCRIPT', category: '프로그래밍', hint: '웹의 언어' },
+  { word: 'PYTHON', category: '프로그래밍', hint: '뱀 이름의 언어' },
+  { word: 'ALGORITHM', category: '컴퓨터', hint: '문제 해결 절차' },
+  { word: 'COMPUTER', category: '컴퓨터', hint: '계산하는 기계' },
+  { word: 'KEYBOARD', category: '컴퓨터', hint: '타이핑 도구' },
+  { word: 'DATABASE', category: '컴퓨터', hint: '데이터 저장소' },
+  { word: 'ELEPHANT', category: '동물', hint: '코가 긴 동물' },
+  { word: 'DOLPHIN', category: '동물', hint: '바다의 지능인' },
+  { word: 'BUTTERFLY', category: '동물', hint: '날개 달린 곤충' },
+  { word: 'PENGUIN', category: '동물', hint: '남극의 새' },
+  { word: 'VOLCANO', category: '자연', hint: '마그마가 뿜는 곳' },
+  { word: 'RAINBOW', category: '자연', hint: '비 온 뒤 7색' },
+  { word: 'GALAXY', category: '우주', hint: '수천억 개의 별' },
+  { word: 'ASTRONAUT', category: '우주', hint: '우주를 여행하는 사람' },
+  { word: 'PIZZA', category: '음식', hint: '이탈리아 원형 빵' },
+  { word: 'CHOCOLATE', category: '음식', hint: '달콤한 갈색 간식' },
+  { word: 'SPAGHETTI', category: '음식', hint: '길고 얇은 파스타' },
+  { word: 'MARATHON', category: '스포츠', hint: '42.195km 달리기' },
+  { word: 'CHAMPION', category: '스포츠', hint: '1등을 차지한 사람' },
+  { word: 'SYMPHONY', category: '음악', hint: '오케스트라 대곡' },
+];
+
+const MAX_WRONG = 6;
+const KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+
+let currentWord, guessed, wrongGuesses, score = 0, gameOver = false;
+
+const canvas = document.getElementById('gallows');
+const ctx = canvas.getContext('2d');
+
+function drawGallows(wrong) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const s = (color, width) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'square';
+  };
+
+  // 구조물
+  s('#5a3e1b', 5);
+  ctx.beginPath();
+  // 바닥
+  ctx.moveTo(20, 210); ctx.lineTo(180, 210);
+  // 기둥
+  ctx.moveTo(50, 210); ctx.lineTo(50, 20);
+  // 윗 가로대
+  ctx.moveTo(50, 20); ctx.lineTo(130, 20);
+  // 짧은 기울기
+  ctx.moveTo(50, 45); ctx.lineTo(80, 20);
+  ctx.stroke();
+
+  // 밧줄
+  if (wrong >= 1) {
+    s('#8b6914', 3);
+    ctx.beginPath();
+    ctx.moveTo(130, 20); ctx.lineTo(130, 45);
+    ctx.stroke();
+  }
+
+  // 머리
+  if (wrong >= 2) {
+    ctx.strokeStyle = '#e8c090';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(130, 60, 15, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // 몸통
+  if (wrong >= 3) {
+    s('#e8c090', 3);
+    ctx.beginPath();
+    ctx.moveTo(130, 75); ctx.lineTo(130, 130);
+    ctx.stroke();
+  }
+
+  // 왼팔
+  if (wrong >= 4) {
+    s('#e8c090', 3);
+    ctx.beginPath();
+    ctx.moveTo(130, 90); ctx.lineTo(105, 115);
+    ctx.stroke();
+  }
+
+  // 오른팔
+  if (wrong >= 5) {
+    s('#e8c090', 3);
+    ctx.beginPath();
+    ctx.moveTo(130, 90); ctx.lineTo(155, 115);
+    ctx.stroke();
+  }
+
+  // 다리 (왼, 오)
+  if (wrong >= 6) {
+    s('#e8c090', 3);
+    ctx.beginPath();
+    ctx.moveTo(130, 130); ctx.lineTo(108, 165);
+    ctx.moveTo(130, 130); ctx.lineTo(152, 165);
+    ctx.stroke();
+
+    // 눈 X
+    ctx.strokeStyle = '#ff3a3a';
+    ctx.lineWidth = 2;
+    [[124,54],[130,60],[136,54],[124,60],[130,54],[136,60]];
+    const ex = 130, ey = 60, r = 5;
+    ctx.beginPath();
+    ctx.moveTo(ex-r, ey-r); ctx.lineTo(ex+r, ey+r);
+    ctx.moveTo(ex+r, ey-r); ctx.lineTo(ex-r, ey+r);
+    ctx.stroke();
+  }
+}
+
+function buildKeyboard() {
+  const kb = document.getElementById('keyboard');
+  kb.innerHTML = '';
+  KEYBOARD_ROWS.forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'key-row';
+    [...row].forEach(ch => {
+      const btn = document.createElement('button');
+      btn.className = 'key';
+      btn.textContent = ch;
+      btn.id = 'key-' + ch;
+      btn.onclick = () => guess(ch);
+      rowEl.appendChild(btn);
+    });
+    kb.appendChild(rowEl);
+  });
+}
+
+function updateWordDisplay() {
+  const wd = document.getElementById('wordDisplay');
+  wd.innerHTML = '';
+  [...currentWord.word].forEach(ch => {
+    const slot = document.createElement('div');
+    slot.className = 'letter-slot';
+    const charEl = document.createElement('div');
+    charEl.className = 'letter-char';
+    charEl.textContent = guessed.has(ch) ? ch : '';
+    const line = document.createElement('div');
+    line.className = 'letter-line';
+    slot.appendChild(charEl);
+    slot.appendChild(line);
+    wd.appendChild(slot);
+  });
+}
+
+function updateLives() {
+  const lives = document.getElementById('lives');
+  const remaining = MAX_WRONG - wrongGuesses;
+  lives.innerHTML = '';
+  for (let i = 0; i < MAX_WRONG; i++) {
+    const h = document.createElement('span');
+    h.className = 'heart' + (i >= remaining ? ' lost' : '');
+    h.textContent = '♥';
+    lives.appendChild(h);
+  }
+}
+
+function guess(ch) {
+  if (gameOver || guessed.has(ch)) return;
+  guessed.add(ch);
+
+  const btn = document.getElementById('key-' + ch);
+
+  if (currentWord.word.includes(ch)) {
+    btn.classList.add('correct');
+    btn.disabled = true;
+    updateWordDisplay();
+    checkWin();
+  } else {
+    wrongGuesses++;
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    drawGallows(wrongGuesses);
+    updateLives();
+    checkLose();
+  }
+}
+
+function checkWin() {
+  const won = [...currentWord.word].every(ch => guessed.has(ch));
+  if (!won) return;
+  gameOver = true;
+  score += (MAX_WRONG - wrongGuesses) * 10 + 20;
+  document.getElementById('score').textContent = score;
+  setTimeout(() => showOverlay(true), 600);
+}
+
+function checkLose() {
+  if (wrongGuesses < MAX_WRONG) return;
+  gameOver = true;
+  setTimeout(() => showOverlay(false), 600);
+}
+
+function showOverlay(win) {
+  const overlay = document.getElementById('overlay');
+  const title = document.getElementById('overlayTitle');
+  const wordEl = document.getElementById('overlayWord');
+
+  title.textContent = win ? '클리어!' : '게임 오버';
+  title.className = 'overlay-title ' + (win ? 'win' : 'lose');
+  wordEl.innerHTML = `정답: <strong>${currentWord.word}</strong>`;
+  overlay.classList.add('show');
+}
+
+function newGame() {
+  document.getElementById('overlay').classList.remove('show');
+  currentWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+  guessed = new Set();
+  wrongGuesses = 0;
+  gameOver = false;
+
+  document.getElementById('category').textContent = currentWord.category;
+  document.getElementById('hint').textContent = currentWord.hint;
+
+  buildKeyboard();
+  updateWordDisplay();
+  updateLives();
+  drawGallows(0);
+  document.getElementById('score').textContent = score;
+}
+
+// 키보드 지원
+document.addEventListener('keydown', e => {
+  const ch = e.key.toUpperCase();
+  if (/^[A-Z]$/.test(ch)) guess(ch);
+});
+
+newGame();
+</script>
+</body>
+</html>

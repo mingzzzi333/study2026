@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로그래스 바</title>
+</head>
+<body>
+
+<style>
+    body {
+        font-family: sans-serif;
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+    input {
+        flex: 1;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+    button {
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    #startBtn {
+        background-color: orange;
+        color: white;
+    }
+    #resetBtn {
+        background-color: #eee;
+        color: #333;
+    }
+    #progressBar {
+        width: 100%;
+        background-color: blanchedalmond;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    #progress {
+        width: 0%;
+        height: 30px;
+        background-color: orange;
+        transition: width 0.3s ease;
+    }
+    #statusText {
+        margin-top: 10px;
+        font-size: 15px;
+        color: #555;
+    }
+    #percentText {
+        font-weight: bold;
+        color: orange;
+    }
+</style>
+
+<h1>프로그래스 바</h1>
+<div class="controls">
+    <input type="number" id="timeInput" placeholder="초를 입력하세요" min="1">
+    <button id="startBtn" onclick="startProgress()">시작</button>
+    <button id="resetBtn" onclick="resetProgress()">초기화</button>
+</div>
+<div id="progressBar">
+    <div id="progress"></div>
+</div>
+<div id="statusText">대기 중...</div>
+
+<script>
+    let interval;
+    const timeInput = document.getElementById('timeInput');
+    const progressEl = document.getElementById('progress');
+    const statusText = document.getElementById('statusText');
+    const startBtn = document.getElementById('startBtn');
+
+    function startProgress() {
+        clearInterval(interval);
+
+        const duration = parseInt(timeInput.value);
+        if (!duration || duration < 1) return alert('올바른 초를 입력하세요');
+
+        let elapsed = 0;
+        progressEl.style.width = '0%';
+        startBtn.disabled = true;
+        startBtn.textContent = '진행 중...';
+
+        interval = setInterval(() => {
+            elapsed++;
+            const ratio = (elapsed / duration) * 100;
+            const remaining = duration - elapsed;
+
+            progressEl.style.width = `${ratio}%`;
+            statusText.innerHTML = `진행률: <span id="percentText">${Math.round(ratio)}%</span> | 남은 시간: ${remaining}초`;
+
+            if (elapsed >= duration) {
+                clearInterval(interval);
+                statusText.innerHTML = `✅ 완료! <span id="percentText">100%</span>`;
+                startBtn.disabled = false;
+                startBtn.textContent = '시작';
+            }
+        }, 1000);
+    }
+
+    function resetProgress() {
+        clearInterval(interval);
+        progressEl.style.width = '0%';
+        timeInput.value = '';
+        statusText.textContent = '대기 중...';
+        startBtn.disabled = false;
+        startBtn.textContent = '시작';
+    }
+</script>
+
+</body>
+</html>

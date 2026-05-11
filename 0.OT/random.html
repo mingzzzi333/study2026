@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주사위 (OBS)</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* OBS 투명 배경 핵심 */
+  html, body {
+    background: transparent !important;
+    width: 300px;
+    height: 340px;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    font-family: 'Black Han Sans', sans-serif;
+  }
+
+  /* 주사위 3D */
+  .dice-stage {
+    width: 160px;
+    height: 160px;
+    perspective: 600px;
+    cursor: pointer;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.35));
+  }
+
+  .dice-cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-20deg) rotateY(30deg);
+  }
+
+  .dice-cube.rolling {
+    animation: diceRoll 0.85s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  }
+
+  @keyframes diceRoll {
+    0%   { transform: rotateX(-20deg) rotateY(30deg); }
+    20%  { transform: rotateX(200deg) rotateY(120deg); }
+    50%  { transform: rotateX(400deg) rotateY(260deg); }
+    75%  { transform: rotateX(560deg) rotateY(380deg); }
+    90%  { transform: rotateX(var(--fx)) rotateY(var(--fy)) rotateZ(6deg); }
+    100% { transform: rotateX(var(--fx)) rotateY(var(--fy)); }
+  }
+
+  .face {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #ffffff;
+    border: 3px solid #ddd8cc;
+    border-radius: 20px;
+    display: grid;
+    padding: 22px;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.8),
+      inset 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .face.front  { transform: translateZ(80px); }
+  .face.back   { transform: rotateY(180deg) translateZ(80px); }
+  .face.right  { transform: rotateY(90deg) translateZ(80px); }
+  .face.left   { transform: rotateY(-90deg) translateZ(80px); }
+  .face.top    { transform: rotateX(90deg) translateZ(80px); }
+  .face.bottom { transform: rotateX(-90deg) translateZ(80px); background: #f0ede8; }
+
+  .dot {
+    width: 21px;
+    height: 21px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    justify-self: center;
+    align-self: center;
+  }
+
+  /* 결과 숫자 */
+  .result-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .result-num {
+    font-size: 64px;
+    color: #ffffff;
+    line-height: 1;
+    text-shadow:
+      0 2px 0 rgba(0,0,0,0.3),
+      0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  .result-num.pop {
+    animation: pop 0.4s ease;
+  }
+
+  @keyframes pop {
+    0%   { transform: scale(0.4); opacity: 0.2; }
+    60%  { transform: scale(1.25); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* 버튼 */
+  .roll-btn {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 17px;
+    letter-spacing: 3px;
+    padding: 11px 40px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.15s, transform 0.1s;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  .roll-btn:hover {
+    background: rgba(255,255,255,0.28);
+    transform: translateY(-2px);
+  }
+
+  .roll-btn:active { transform: scale(0.95); }
+  .roll-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+</style>
+</head>
+<body>
+
+<div class="dice-stage" onclick="roll()">
+  <div class="dice-cube" id="cube">
+    <div class="face front"  data-val="1"></div>
+    <div class="face back"   data-val="5"></div>
+    <div class="face right"  data-val="2"></div>
+    <div class="face left"   data-val="4"></div>
+    <div class="face top"    data-val="3"></div>
+    <div class="face bottom" data-val="0"></div>
+  </div>
+</div>
+
+<div class="result-wrap">
+  <div class="result-num" id="num">?</div>
+</div>
+
+<button class="roll-btn" id="btn" onclick="roll()">굴리기</button>
+
+<script>
+const TRANSFORMS = {
+  1: { rx: 0,    ry: 0   },
+  5: { rx: 180,  ry: 0   },
+  2: { rx: 0,    ry: -90 },
+  4: { rx: 0,    ry: 90  },
+  3: { rx: -90,  ry: 0   },
+};
+
+const DOTS = {
+  1: { cols: 1, rows: 1, pos: [[0,0]] },
+  2: { cols: 2, rows: 2, pos: [[0,0],[1,1]] },
+  3: { cols: 3, rows: 3, pos: [[0,0],[1,1],[2,2]] },
+  4: { cols: 2, rows: 2, pos: [[0,0],[0,1],[1,0],[1,1]] },
+  5: { cols: 3, rows: 3, pos: [[0,0],[0,2],[1,1],[2,0],[2,2]] },
+};
+
+function buildFace(el, val) {
+  el.innerHTML = '';
+  if (!DOTS[val]) return;
+  const { cols, rows, pos } = DOTS[val];
+  const set = new Set(pos.map(([r,c]) => r * cols + c));
+  el.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  el.style.gridTemplateRows    = `repeat(${rows}, 1fr)`;
+  for (let i = 0; i < cols * rows; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.style.visibility = set.has(i) ? 'visible' : 'hidden';
+    el.appendChild(d);
+  }
+}
+
+document.querySelectorAll('.face').forEach(f => {
+  const v = parseInt(f.dataset.val);
+  if (v >= 1 && v <= 5) buildFace(f, v);
+});
+
+let rolling = false;
+
+function roll() {
+  if (rolling) return;
+  rolling = true;
+  document.getElementById('btn').disabled = true;
+
+  const result = Math.ceil(Math.random() * 5);
+  const cube = document.getElementById('cube');
+  const { rx, ry } = TRANSFORMS[result];
+
+  cube.style.setProperty('--fx', rx + 'deg');
+  cube.style.setProperty('--fy', ry + 'deg');
+
+  cube.classList.remove('rolling');
+  void cube.offsetWidth;
+  cube.classList.add('rolling');
+
+  setTimeout(() => {
+    cube.classList.remove('rolling');
+    cube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+    const numEl = document.getElementById('num');
+    numEl.textContent = result;
+    numEl.classList.remove('pop');
+    void numEl.offsetWidth;
+    numEl.classList.add('pop');
+
+    rolling = false;
+    document.getElementById('btn').disabled = false;
+  }, 880);
+}
+</script>
+</body>
+</html>

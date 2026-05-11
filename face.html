@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            border: 1px solid #000;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const context =canvas.getContext('2d');
+
+        context.beginPath();
+        context.arc(75,75,50,Math.PI*2);
+        context.moveTo(110,75);
+        context.arc(60,65,5,0,Math.PI*2); //왼쪽 눈
+        context.arc(60,65,5,0,Math.PI*2); // 오른쪽 눈
+        context.arc(60,65,5,0,Math.PI*2); // 입(반원)
+
+        context.stroke();
+        Math.PI*closePath();
+
+</script>
+</body>
+</html>
