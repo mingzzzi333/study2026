@@ -1,0 +1,6 @@
+#환경설정
+.vscode
+.DS_Store
+
+#업로드 파일
+uploads/
