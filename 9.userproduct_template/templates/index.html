@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쇼핑몰</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+        header { background: #333; color: white; padding: 20px; text-align: center; }
+        nav { background: #444; padding: 10px; text-align: center; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .banner { background: #ff6b6b; color: white; padding: 60px; text-align: center; border-radius: 10px; }
+        .banner h2 { font-size: 2em; }
+        .banner a { background: white; color: #ff6b6b; padding: 10px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .section { margin-top: 40px; }
+        .section h2 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .cards { display: flex; gap: 20px; flex-wrap: wrap; }
+        .card { background: white; border-radius: 10px; padding: 20px; width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+        .card h3 { font-size: 1em; }
+        .card p { color: #ff6b6b; font-weight: bold; }
+        .card a { display: block; margin-top: 10px; background: #333; color: white; padding: 8px; border-radius: 5px; text-decoration: none; }
+        footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>쇼핑몰</h1>
+    </header>
+    <nav>
+        <a href="/">홈</a>
+        <a href="/product/view">상품목록</a>
+        <a href="/user">사용자</a>
+    </nav>
+
+    <div class="container">
+        <div class="banner">
+            <h2>지금 바로 쇼핑하세요!</h2>
+            <p>최고의 상품을 최저가로</p>
+            <a href="/product/view">상품 보러가기</a>
+        </div>
+
+        <div class="section">
+            <h2>인기 상품</h2>
+            <div class="cards">
+                {% for product in products %}
+                <div class="card">
+                    <h3>{{ product.name }}</h3>
+                    <p>${{ product.price }}</p>
+                    <a href="/product?id={{ product.id }}">자세히 보기</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 My Shop. All rights reserved.</p>
+    </footer>
+</body>
+</html>

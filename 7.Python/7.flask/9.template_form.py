@@ -9,6 +9,11 @@ app.config['UPLOAD_FOLDER']='uploads'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+
+def allowed_file(filename):
+    ALLOW_EXT={'png','jpg','jpeg','gif'}
+    
+
 @app.route('/')
 def index():
     return render_template('form.html')

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 조회</title>
+</head>
+<body>
+    <h1>상품 조회</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}$</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
