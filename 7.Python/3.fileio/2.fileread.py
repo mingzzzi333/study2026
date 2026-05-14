@@ -1,15 +1,17 @@
-#1. 작은 파일 열기
-with open("file.txt","r",encoding="utf-8") as file:
+# 1. 작은 파일 열기
+with open("file.txt", "r", encoding="utf-8") as file:
     data = file.read()
-    print("파일 내용 :", data)
+    print("파일 내용: ", data)
 
-#. Legacy파일 /open/read/close 패턴
-# file = open("file.txt","r",encoding="utf-8")
+# 2. Legacy 파일 open / read / close 패턴
+# file = open("file.txt", "r", encoding="utf-8")
 # data = file.read()
-# file.close
+# file.close()
 # print(data)
 
-#3. 큰 파일 읽기
+# 3. 큰 파일 읽기
 with open("file.txt", "r", encoding="utf-8") as file:
     lines = file.readlines()
-    print("파일 내용 :", lines)
+
+    for line in lines:
+        print("파일 내용: ", line)

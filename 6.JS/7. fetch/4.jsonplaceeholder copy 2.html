@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>ㄴ</h1>
+    <button id="loadBtn">데이터</button>
+    <div id="result"><!-- 응답 데이터를 표시할 곳 --></div>
+    <script>
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            fetch('https://jsonplaceholder.typicode.com/users/1')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('네트워크 응답 오류: ' + response.status);
+                    }
+                    console.log("성공적인 응답 옴", response);
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('JSON 파싱 끝난 후 데이터:', data);
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = `
+                        <p>Id: ${data.id}, Title: ${data.title}, Completed: ${data.completed}</p>
+                    `;
+                })
+                .catch((error) => {
+                    console.log("가공하는데 에러뜸", error);
+                });
+        });
+    </script>
+</body>
+</html>

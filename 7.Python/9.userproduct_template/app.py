@@ -60,9 +60,6 @@ def get_products():
         return jsonify(result)
     
     return jsonify(list(products.values()))
-##################################################
-#API용 라우팅
-##################################################
 
 
 if __name__ == "__main__":

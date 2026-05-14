@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>유저 검색</h1>
+
+    <!-- 검색창 추가 -->
+    <input type="text" id="searchInput" placeholder="이름으로 검색..." />
+    <button id="loadBtn">검색</button>
+
+    <div id="result"></div>
+
+    <script>
+        let allUsers = []; // 전체 유저 데이터를 저장해두는 변수
+
+        // 페이지 로드 시 전체 유저 목록을 미리 불러옴
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('네트워크 응답 오류: ' + response.status);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                allUsers = data; // 전체 유저 저장
+            })
+            .catch((error) => {
+                console.log("유저 목록 불러오기 실패", error);
+            });
+
+        // 검색 버튼 클릭 시
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const resultDiv = document.getElementById('result');
+
+            // 이름에 키워드가 포함된 유저만 필터링
+            const filtered = allUsers.filter(user =>
+                user.name.toLowerCase().includes(keyword)
+            );
+
+            if (filtered.length === 0) {
+                resultDiv.innerHTML = '<p>검색 결과가 없습니다.</p>';
+                return;
+            }
+
+            // 결과 렌더링
+            resultDiv.innerHTML = filtered.map(user => `
+                <ul>
+                    <li>사용자 ID: ${user.id}</li>
+                    <ul>
+                        <li>이름: ${user.name}</li>
+                        <li>전화번호: ${user.phone}</li>
+                        <li>웹사이트: ${user.website}</li>
+                    </ul>
+                </ul>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
