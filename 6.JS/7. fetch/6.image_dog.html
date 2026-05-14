@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>랜덤 강아지</title>
 </head>
 <body>
-    <!-- 1. 버튼을 클릭하면, 이미지를 화면에 출력한다. -->
-    <!-- 요청해야할 주소는 dog.ceo 에 방문해서 random 강아지 사진을 받아오는 스펙을 찾아서.. -->
+    <h1>🐶 랜덤 강아지</h1>
+
+    <button id="fetchBtn">강아지 사진 요청</button>
+    <br><br>
+
+    <!-- 이미지 표시할 곳 -->
+    <img id="dogImg" src="" alt="" width="400" style="display:none;" />
+
+    <script>
+        document.getElementById('fetchBtn').addEventListener('click', () => {
+
+            // dog.ceo 문서에서 확인한 random 이미지 엔드포인트
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('응답 오류: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('응답 데이터:', data);
+
+                    // data.message 에 이미지 URL이 들어있음
+                    const img = document.getElementById('dogImg');
+                    img.src = data.message;
+                    img.alt = '랜덤 강아지';
+                    img.style.display = 'block';
+                })
+                .catch((error) => {
+                    console.log('에러:', error);
+                });
+        });
+    </script>
 </body>
 </html>
