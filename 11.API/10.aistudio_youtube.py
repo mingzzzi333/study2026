@@ -19,7 +19,7 @@ with open("video_stats.csv","r",encoding="utf-8")as file:
             "comments":row["comments"],
         )}
 
-#프롬프트 작성
+#프롬프트 작성S
 prompt=f"""
 다음 유튜브 영상 데아터를 분석해서:
 1. 어떤 영상이 가장 인기가 있는지 
