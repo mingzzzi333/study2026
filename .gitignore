@@ -7,3 +7,10 @@
 
 # 업로드 파일
 uploads/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+echo "*.csv"
