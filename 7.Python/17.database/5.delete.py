@@ -9,8 +9,8 @@ cur=conn.cursor()
 
 #테이블 생성
 cur.execute("""
-        update users set age=28 where name ='Bob'
-            """)
+        delete from users where name=?
+            """,('Bob'))
 
 
 conn.commit()
