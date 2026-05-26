@@ -1,0 +1,403 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "username": "VibeSeeker",
+      "password": "123",
+      "avatar": "avatar1",
+      "bio": "음악에 살고 음악에 죽는 리스너입니다. 🎧",
+      "status": "active",
+      "role": "user"
+    },
+    {
+      "id": "user2",
+      "username": "MelodyQueen",
+      "password": "123",
+      "avatar": "avatar2",
+      "bio": "팝송과 인디음악을 주로 들어요. 🎵",
+      "status": "active",
+      "role": "user"
+    },
+    {
+      "id": "user3",
+      "username": "SynthWave_Fan",
+      "password": "123",
+      "avatar": "avatar3",
+      "bio": "80년대 레트로 신스웨이브 매니아 ⚡",
+      "status": "active",
+      "role": "user"
+    },
+    {
+      "id": "emp1",
+      "username": "관리자1",
+      "password": "1234",
+      "avatar": "admin",
+      "bio": "MUSICAPP 공식 시스템 관리자",
+      "status": "active",
+      "role": "admin"
+    },
+    {
+      "id": "mem1",
+      "username": "이민지",
+      "password": "1111",
+      "avatar": "avatar1",
+      "bio": "음악을 사랑합니다.",
+      "status": "active",
+      "role": "user"
+    }
+  ],
+  "music": [
+    {
+      "id": "m1",
+      "title": "Midnight City Groove",
+      "artist": "Neon Skyline",
+      "album": "Synth Horizons",
+      "cover": "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400&q=80",
+      "likes": 125,
+      "tags": [
+        "Synthwave",
+        "Chill",
+        "Retro",
+        "Focus"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "duration": "6:12"
+    },
+    {
+      "id": "m2",
+      "title": "Summer Breeze",
+      "artist": "Chilled Waves",
+      "album": "Coastal Drive",
+      "cover": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80",
+      "likes": 98,
+      "tags": [
+        "Chill",
+        "Pop",
+        "Summer",
+        "K-Pop"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "duration": "7:05"
+    },
+    {
+      "id": "m3",
+      "title": "Neon Hearts",
+      "artist": "Retro Love",
+      "album": "Lovesick Cyberpunk",
+      "cover": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&q=80",
+      "likes": 87,
+      "tags": [
+        "Synthwave",
+        "Dance",
+        "Retro"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "duration": "5:44"
+    },
+    {
+      "id": "m4",
+      "title": "Deep Coffee Study",
+      "artist": "Lo-Fi Beats",
+      "album": "Rainy Day Cafe",
+      "cover": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80",
+      "likes": 77,
+      "tags": [
+        "Lo-Fi",
+        "Chill",
+        "Focus",
+        "Study"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+      "duration": "5:02"
+    },
+    {
+      "id": "m5",
+      "title": "Cyberpunk Runner",
+      "artist": "Laser Knight",
+      "album": "Overdrive Phase 2",
+      "cover": "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=400&q=80",
+      "likes": 72,
+      "tags": [
+        "Workout",
+        "Dance",
+        "Synthwave",
+        "Exciting"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+      "duration": "6:03"
+    },
+    {
+      "id": "m6",
+      "title": "Spring Blossoms",
+      "artist": "Min-ji Park",
+      "album": "Acoustic Seasons",
+      "cover": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&q=80",
+      "likes": 65,
+      "tags": [
+        "K-Pop",
+        "Acoustic",
+        "Spring",
+        "Chill"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+      "duration": "5:38"
+    },
+    {
+      "id": "m7",
+      "title": "Electric Horizon",
+      "artist": "Future Bass",
+      "album": "Vivid Dreams",
+      "cover": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&q=80",
+      "likes": 58,
+      "tags": [
+        "Dance",
+        "Workout",
+        "Exciting"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+      "duration": "5:07"
+    },
+    {
+      "id": "m8",
+      "title": "Quiet Library",
+      "artist": "Study Companion",
+      "album": "White Noise Essentials",
+      "cover": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&q=80",
+      "likes": 49,
+      "tags": [
+        "Study",
+        "Focus",
+        "Chill"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+      "duration": "5:18"
+    },
+    {
+      "id": "m9",
+      "title": "Late Night Jazz Bar",
+      "artist": "The Blue Notes Trio",
+      "album": "Standard Moods",
+      "cover": "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=400&q=80",
+      "likes": 42,
+      "tags": [
+        "Jazz",
+        "Chill",
+        "Classic"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+      "duration": "5:42"
+    },
+    {
+      "id": "m10",
+      "title": "Run Fast",
+      "artist": "Beat Drifter",
+      "album": "Cardio Hits",
+      "cover": "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=400&q=80",
+      "likes": 38,
+      "tags": [
+        "Workout",
+        "Exciting",
+        "Dance"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+      "duration": "5:23"
+    },
+    {
+      "id": "m11",
+      "title": "Lo-Fi Ocean Waves",
+      "artist": "Sandy Beaches",
+      "album": "Coastal Lo-Fi",
+      "cover": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
+      "likes": 31,
+      "tags": [
+        "Lo-Fi",
+        "Chill",
+        "Summer"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
+      "duration": "6:08"
+    },
+    {
+      "id": "m12",
+      "title": "Supernova Disco",
+      "artist": "Galaxy Groovers",
+      "album": "Disco Nebula",
+      "cover": "https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?w=400&q=80",
+      "likes": 27,
+      "tags": [
+        "Dance",
+        "Exciting",
+        "Retro"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
+      "duration": "5:58"
+    },
+    {
+      "id": "m13",
+      "title": "Rainy Afternoon Melody",
+      "artist": "Piano Oasis",
+      "album": "Cozy Piano Keys",
+      "cover": "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&q=80",
+      "likes": 19,
+      "tags": [
+        "Acoustic",
+        "Chill",
+        "Study"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
+      "duration": "5:10"
+    },
+    {
+      "id": "m14",
+      "title": "K-Pop Sparkle",
+      "artist": "Star Project",
+      "album": "Rising Star Single",
+      "cover": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80",
+      "likes": 15,
+      "tags": [
+        "K-Pop",
+        "Dance",
+        "Exciting"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
+      "duration": "5:17"
+    },
+    {
+      "id": "m15",
+      "title": "Focus Ambient Wave",
+      "artist": "Zen Mind",
+      "album": "Calm Waves",
+      "cover": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400&q=80",
+      "likes": 8,
+      "tags": [
+        "Focus",
+        "Study",
+        "Chill"
+      ],
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
+      "duration": "6:33"
+    }
+  ],
+  "comments": [
+    {
+      "id": "c_1",
+      "musicId": "m1",
+      "userId": "user2",
+      "username": "MelodyQueen",
+      "avatar": "avatar2",
+      "content": "이 곡 신스 소리가 너무 환상적이에요! 매일 퇴근할 때 듣고 있습니다. 😍",
+      "timestamp": "2026-05-20T18:30:00Z",
+      "likes": [
+        "user1",
+        "user3"
+      ]
+    },
+    {
+      "id": "c_2",
+      "musicId": "m1",
+      "userId": "user1",
+      "username": "VibeSeeker",
+      "avatar": "avatar1",
+      "content": "맞아요, 80년대 감성 지대루네요. 특히 리듬이 쫀득합니다.",
+      "parentId": "c_1",
+      "timestamp": "2026-05-20T19:02:00Z",
+      "likes": [
+        "user2",
+        "mem1"
+      ]
+    },
+    {
+      "id": "c_3",
+      "musicId": "m4",
+      "userId": "user3",
+      "username": "SynthWave_Fan",
+      "avatar": "avatar3",
+      "content": "시험 공부할 때 백그라운드로 틀어놓기 최고입니다. 집중 잘 됨!",
+      "timestamp": "2026-05-21T01:10:00Z",
+      "likes": [
+        "user2"
+      ]
+    },
+    {
+      "id": "c_4",
+      "musicId": "m2",
+      "userId": "user1",
+      "username": "VibeSeeker",
+      "avatar": "avatar1",
+      "content": "여름 드라이브 갈 때 완전 필수곡! 청량감 미쳤어요 🌊",
+      "timestamp": "2026-05-21T05:20:00Z",
+      "likes": []
+    },
+    {
+      "id": "c_1779334051487",
+      "musicId": "m1",
+      "userId": "mem1",
+      "username": "이민지",
+      "avatar": "avatar1",
+      "content": "엥 처음 들어보는데요",
+      "timestamp": "2026-05-21T03:27:31.487759Z",
+      "likes": [],
+      "parentId": "c_1"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n_1",
+      "recipientId": "user2",
+      "senderId": "user1",
+      "senderName": "VibeSeeker",
+      "type": "reply",
+      "musicId": "m1",
+      "musicTitle": "Midnight City Groove",
+      "commentId": "c_1",
+      "content": "맞아요, 80년대 감성 지대루네요. 특히 리듬이 쫀득합니다.",
+      "timestamp": "2026-05-20T19:02:00Z",
+      "read": false
+    },
+    {
+      "id": "n_2",
+      "recipientId": "user2",
+      "senderId": "user3",
+      "senderName": "SynthWave_Fan",
+      "type": "like",
+      "musicId": "m1",
+      "musicTitle": "Midnight City Groove",
+      "commentId": "c_1",
+      "content": "회원님의 댓글을 좋아합니다.",
+      "timestamp": "2026-05-20T21:40:00Z",
+      "read": false
+    },
+    {
+      "id": "n_1779334036811",
+      "recipientId": "user1",
+      "senderId": "mem1",
+      "senderName": "이민지",
+      "type": "like",
+      "musicId": "m1",
+      "musicTitle": "Midnight City Groove",
+      "commentId": "c_2",
+      "content": "회원님의 댓글을 좋아합니다.",
+      "timestamp": "2026-05-21T03:27:16.811921Z",
+      "read": false
+    },
+    {
+      "id": "n_1779334051487",
+      "recipientId": "user2",
+      "senderId": "mem1",
+      "senderName": "이민지",
+      "type": "reply",
+      "musicId": "m1",
+      "musicTitle": "Midnight City Groove",
+      "commentId": "c_1",
+      "content": "엥 처음 들어보는데요",
+      "timestamp": "2026-05-21T03:27:31.487899Z",
+      "read": false
+    }
+  ],
+  "likes": {
+    "mem1": [
+      "m1",
+      "m4"
+    ]
+  }
+}

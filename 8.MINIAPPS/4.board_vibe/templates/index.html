@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Vibe - 감각적인 담벼락</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Background elements for Glassmorphism effect -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo-text"><i class="fa-solid fa-wand-magic-sparkles"></i> Board Vibe</h1>
+            <p class="subtitle">당신의 생각과 영감을 기록하는 감각적인 공간</p>
+        </header>
+
+        <!-- Post Form Container -->
+        <section class="form-container glass-panel">
+            <form action="{{ url_for('add_post') }}" method="POST" id="postForm">
+                <div class="input-group">
+                    <label for="title"><i class="fa-solid fa-heading"></i> 제목</label>
+                    <input type="text" id="title" name="title" placeholder="어떤 주제로 대화를 나눌까요?" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="message"><i class="fa-solid fa-paragraph"></i> 메시지</label>
+                    <textarea id="message" name="message" rows="4" placeholder="당신의 일상이나 새로운 아이디어를 들려주세요..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <span>기록 남기기</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- Cards Section -->
+        <main class="board-section">
+            <div class="section-title">
+                <h2><i class="fa-solid fa-list-ul"></i> 최근 올라온 이야기</h2>
+                <span class="count-badge">{{ posts|length }}개의 기록</span>
+            </div>
+
+            {% if posts %}
+                <div class="cards-grid">
+                    {% for post in posts %}
+                        <article class="card glass-panel fade-in">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ post.title }}</h3>
+                                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" class="delete-form">
+                                    <button type="submit" class="btn-delete" title="삭제하기" onclick="return confirm('이 게시글을 삭제하시겠습니까?');">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-message">{{ post.message }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-date" data-time="{{ post.created_at }}">
+                                    <i class="fa-regular fa-clock"></i> {{ post.created_at }}
+                                </span>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state glass-panel fade-in">
+                    <div class="empty-icon">
+                        <i class="fa-regular fa-comment-dots"></i>
+                    </div>
+                    <h3>첫 이야기를 기다리고 있어요</h3>
+                    <p>위 폼을 채워 첫 글을 등록해 보세요!</p>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "music-app",
+  "version": "1.0.0",
+  "description": "Premium Music Discovery & SNS Single Page Application",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python app.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
