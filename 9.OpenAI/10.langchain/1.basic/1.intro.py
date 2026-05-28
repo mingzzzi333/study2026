@@ -7,8 +7,8 @@ from langchain_openai import OpenAI
 load_dotenv()
 openai_api_key=os.environ.get('OPEN_API_KEY')
 
-lim = OpenAI()
-print(lim)
+llm = OpenAI()
+print(llm)
 
 prompt="오늘 저녁은 무엇을 먹을까요?"
-result=lim.invoke(prompt)
+result=llm.invoke(prompt)
