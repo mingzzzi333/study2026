@@ -16,4 +16,11 @@ uploads/
 echo "*.csv"
 
 
+#Data
+history.json
+*.pdf
 
+*.db
+*.sqlite
+*.sqlite3
+chromadb/
